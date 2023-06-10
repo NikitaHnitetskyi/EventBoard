@@ -4,8 +4,8 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<EventOrganizer> EventOrganizers { get; set; }
-        public ICollection<EventSponsor> EventSponsors { get; set; }
-        public ICollection<EventMember> EventMembers { get; set; }
+        public ICollection<User> EventOrganizers { get; set; }
+        public ICollection<User> EventSponsors { get; set; }
+        public ICollection<User> EventPorticapants { get; set; }
     }
 }

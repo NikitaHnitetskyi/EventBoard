@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public int EventId { get; set; }
-        public string SponsorName { get; set; }
-        public Event Event { get; set; }
+        public int SponsorId { get; set; }
     }
 }

@@ -7,15 +7,15 @@ namespace EventBoardDataAccess.DataBase.Repository
 {
     public class UnitOfWork
     {
-        private IRepository<EventMember> eventMemberRepository;
+        private IRepository<EventParticipant> eventMemberRepository;
         private IRepository<EventOrganizer> eventOrganizerRepository;
         private IRepository<EventSponsor> eventSponsorRepository;
         private IRepository<Role> roleRepository;
         private IRepository<User> userRepository;
         private IRepository<Event> eventRepository;
 
-        private RoleContext dbContext;
-        public UnitOfWork(RoleContext dbContext, IRepository<EventMember> eventMemberRepository, IRepository<EventOrganizer> eventOrganizerRepository, IRepository<EventSponsor> eventSponsorRepository,
+        private EventBoardContext dbContext;
+        public UnitOfWork(EventBoardContext dbContext, IRepository<EventParticipant> eventMemberRepository, IRepository<EventOrganizer> eventOrganizerRepository, IRepository<EventSponsor> eventSponsorRepository,
             IRepository<Role> roleRepository, IRepository<Event> eventRepository, IRepository<User> userRepository)
         {
             this.dbContext = dbContext;
@@ -27,15 +27,15 @@ namespace EventBoardDataAccess.DataBase.Repository
             this.eventRepository.DbContext = dbContext;
         }
         #region EventMember
-        public void AddEventMember( int id)
+        public void AddEventMember(int id)
         {
-            eventMemberRepository.Add(new EventMember { Id = id });
+            eventMemberRepository.Add(new EventParticipant { Id = id });
         }
         public void DeleteEventMember(int id)
         {
             eventMemberRepository.Delete(id);
         }
-        public IQueryable<EventMember> AllEventMember()
+        public IQueryable<EventParticipant> AllEventMember()
         {
             var eventMember = eventMemberRepository.GetAll();
             return eventMember;
@@ -96,7 +96,7 @@ namespace EventBoardDataAccess.DataBase.Repository
         #region Event
         public void AddEvent(string name, string info, string plase)
         {
-       //   eventRepository.Add(new Event { Name = name, Info = info, Place = plase, });
+            //   eventRepository.Add(new Event { Name = name, Info = info, Place = plase, });
         }
         public void DeleteEvent(int id)
         {
@@ -130,13 +130,13 @@ namespace EventBoardDataAccess.DataBase.Repository
         {
             var module = new Module();
             var kernal = new StandardKernel(module);
-            eventMemberRepository = kernal.Get<IRepository<EventMember>>();
+            eventMemberRepository = kernal.Get<IRepository<EventParticipant>>();
             eventOrganizerRepository = kernal.Get<IRepository<EventOrganizer>>();
             eventSponsorRepository = kernal.Get<IRepository<EventSponsor>>();
             roleRepository = kernal.Get<IRepository<Role>>();
-            userRepository= kernal.Get<IRepository<User>>();
+            userRepository = kernal.Get<IRepository<User>>();
             eventRepository = kernal.Get<IRepository<Event>>();
-            dbContext = kernal.Get<RoleContext>();
+            dbContext = kernal.Get<EventBoardContext>();
 
             eventMemberRepository.DbContext = dbContext;
             eventOrganizerRepository.DbContext = dbContext;

@@ -2,7 +2,7 @@
 {
     public interface IRepository<T> where T : class
     {
-        public RoleContext DbContext { get; set; }
+        public EventBoardContext DbContext { get; set; }
         T GetValue(int id);
         public void Add(T entity);
         public void Delete(int id);

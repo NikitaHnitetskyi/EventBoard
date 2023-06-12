@@ -2,7 +2,7 @@
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        public RoleContext DbContext { get; set; }
+        public EventBoardContext DbContext { get; set; }
         public void Add(T entity)
         {
             DbContext.Set<T>().Add(entity);

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventBoardDataAccess.Migrations
 {
-    [DbContext(typeof(RoleContext))]
+    [DbContext(typeof(EventBoardContext))]
     [Migration("20230609120602_First")]
     partial class First
     {

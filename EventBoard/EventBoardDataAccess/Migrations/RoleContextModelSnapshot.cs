@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventBoardDataAccess.Migrations
 {
-    [DbContext(typeof(RoleContext))]
+    [DbContext(typeof(EventBoardContext))]
     partial class RoleContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

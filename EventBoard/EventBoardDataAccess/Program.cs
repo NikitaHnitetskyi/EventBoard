@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var uw = new UnitOfWork();
-        uw.AddEventMember(3);
+        //var uw = new UnitOfWork();
+        //uw.AddEventMember(3);
     }
 }

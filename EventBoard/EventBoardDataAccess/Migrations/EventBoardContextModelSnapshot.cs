@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventBoardDataAccess.Migrations
 {
     [DbContext(typeof(EventBoardContext))]
-    partial class RoleContextModelSnapshot : ModelSnapshot
+    partial class EventBoardContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -38,10 +38,13 @@ namespace EventBoardDataAccess.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventMember", b =>
+            modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventOrganizer", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
@@ -49,50 +52,59 @@ namespace EventBoardDataAccess.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id", "EventId", "UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EventMembers");
+                    b.ToTable("EventOrganizer");
                 });
 
-            modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventOrganizer", b =>
+            modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventParticipant", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("EventId", "UserId");
+                    b.HasIndex("EventId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EventOrganizers");
+                    b.ToTable("EventParticipant");
                 });
 
             modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventSponsor", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SponsorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SponsorId")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id", "EventId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("EventSponsors");
+                    b.HasIndex("SponsorId");
+
+                    b.ToTable("EventSponsor");
                 });
 
             modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.Role", b =>
@@ -138,53 +150,49 @@ namespace EventBoardDataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventMember", b =>
-                {
-                    b.HasOne("EventBoardDataAccess.DataBase.Models.Event", "Event")
-                        .WithMany("EventMembers")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EventBoardDataAccess.DataBase.Models.User", "User")
-                        .WithMany("EventMembers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventOrganizer", b =>
                 {
-                    b.HasOne("EventBoardDataAccess.DataBase.Models.Event", "Event")
-                        .WithMany("EventOrganizers")
+                    b.HasOne("EventBoardDataAccess.DataBase.Models.Event", null)
+                        .WithMany()
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EventBoardDataAccess.DataBase.Models.User", "User")
-                        .WithMany("EventOrganizers")
+                    b.HasOne("EventBoardDataAccess.DataBase.Models.User", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.Navigation("Event");
+            modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventParticipant", b =>
+                {
+                    b.HasOne("EventBoardDataAccess.DataBase.Models.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("EventBoardDataAccess.DataBase.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.EventSponsor", b =>
                 {
-                    b.HasOne("EventBoardDataAccess.DataBase.Models.Event", "Event")
-                        .WithMany("EventSponsors")
+                    b.HasOne("EventBoardDataAccess.DataBase.Models.Event", null)
+                        .WithMany()
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Event");
+                    b.HasOne("EventBoardDataAccess.DataBase.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("SponsorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.User", b =>
@@ -196,22 +204,6 @@ namespace EventBoardDataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.Event", b =>
-                {
-                    b.Navigation("EventMembers");
-
-                    b.Navigation("EventOrganizers");
-
-                    b.Navigation("EventSponsors");
-                });
-
-            modelBuilder.Entity("EventBoardDataAccess.DataBase.Models.User", b =>
-                {
-                    b.Navigation("EventMembers");
-
-                    b.Navigation("EventOrganizers");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,7 +5,7 @@
 namespace EventBoardDataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class ManytoMany : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,25 +38,6 @@ namespace EventBoardDataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventSponsors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false),
-                    SponsorName = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventSponsors", x => new { x.Id, x.EventId });
-                    table.ForeignKey(
-                        name: "FK_EventSponsors_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -77,24 +58,25 @@ namespace EventBoardDataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventMembers",
+                name: "EventOrganizer",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EventId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventMembers", x => new { x.Id, x.EventId, x.UserId });
+                    table.PrimaryKey("PK_EventOrganizer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EventMembers_Events_EventId",
+                        name: "FK_EventOrganizer_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EventMembers_Users_UserId",
+                        name: "FK_EventOrganizer_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -102,49 +84,86 @@ namespace EventBoardDataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventOrganizers",
+                name: "EventParticipant",
                 columns: table => new
                 {
-                    EventId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventOrganizers", x => new { x.EventId, x.UserId });
+                    table.PrimaryKey("PK_EventParticipant", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EventOrganizers_Events_EventId",
+                        name: "FK_EventParticipant_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EventOrganizers_Users_UserId",
+                        name: "FK_EventParticipant_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "EventSponsor",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    SponsorId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventSponsor", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventSponsor_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EventSponsor_Users_SponsorId",
+                        column: x => x.SponsorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_EventMembers_EventId",
-                table: "EventMembers",
+                name: "IX_EventOrganizer_EventId",
+                table: "EventOrganizer",
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventMembers_UserId",
-                table: "EventMembers",
+                name: "IX_EventOrganizer_UserId",
+                table: "EventOrganizer",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventOrganizers_UserId",
-                table: "EventOrganizers",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EventSponsors_EventId",
-                table: "EventSponsors",
+                name: "IX_EventParticipant_EventId",
+                table: "EventParticipant",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventParticipant_UserId",
+                table: "EventParticipant",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventSponsor_EventId",
+                table: "EventSponsor",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventSponsor_SponsorId",
+                table: "EventSponsor",
+                column: "SponsorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -156,19 +175,19 @@ namespace EventBoardDataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EventMembers");
+                name: "EventOrganizer");
 
             migrationBuilder.DropTable(
-                name: "EventOrganizers");
+                name: "EventParticipant");
 
             migrationBuilder.DropTable(
-                name: "EventSponsors");
-
-            migrationBuilder.DropTable(
-                name: "Users");
+                name: "EventSponsor");
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Roles");

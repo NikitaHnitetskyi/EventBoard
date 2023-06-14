@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BussinesLayer.Interfaces;
+using BussinesLayer.Models;
+using EventBoardDataAccess.DataBase;
+using EventBoardDataAccess.DataBase.Models;
+using Microsoft.AspNetCore.Mvc;
 using MVCBOARD.Models;
 using System.Diagnostics;
 
@@ -6,12 +10,10 @@ namespace MVCBOARD.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+      
+        private readonly ILogger<HomeController> _logger;
+      
 
         public IActionResult Index()
         {

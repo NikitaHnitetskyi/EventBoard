@@ -2,7 +2,6 @@
 using EventBoardDataAccess.DataBase.Modul;
 using Ninject;
 
-
 namespace EventBoardDataAccess.DataBase.Repository
 {
     public class UnitOfWork
@@ -26,16 +25,18 @@ namespace EventBoardDataAccess.DataBase.Repository
             this.userRepository.DbContext = dbContext;
             this.eventRepository.DbContext = dbContext;
         }
-        #region EventMember
-        public void AddEventMember(int id)
+        #region EventParticipant
+        public void AddEventMember(int eventId)
         {
-            eventMemberRepository.Add(new EventParticipant { Id = id });
+            eventMemberRepository.Add(new EventParticipant { Id = eventId });
+            dbContext.SaveChanges();
         }
-        public void DeleteEventMember(int id)
+        public void DeleteEventParticipant(int id)
         {
             eventMemberRepository.Delete(id);
+            dbContext.SaveChanges();
         }
-        public IQueryable<EventParticipant> AllEventMember()
+        public IQueryable<EventParticipant> AllEventParticipant()
         {
             var eventMember = eventMemberRepository.GetAll();
             return eventMember;
@@ -44,13 +45,15 @@ namespace EventBoardDataAccess.DataBase.Repository
         #endregion
 
         #region EventOrganizer
-        public void AddEventOrganizer()
+        public void AddEventOrganizer(int eventId)
         {
-            eventOrganizerRepository.Add(new EventOrganizer { });
+            eventOrganizerRepository.Add(new EventOrganizer {EventId = eventId });
+            dbContext.SaveChanges();
         }
         public void DeleteEventOrganizer(int id)
         {
             eventOrganizerRepository.Delete(id);
+            dbContext.SaveChanges();
         }
         public IQueryable<EventOrganizer> AllEventOrganizer()
         {
@@ -61,13 +64,15 @@ namespace EventBoardDataAccess.DataBase.Repository
         #endregion
 
         #region EventSponsor
-        public void AddEventSponsor()
+        public void AddEventSponsor(int eventId)
         {
-            eventSponsorRepository.Add(new EventSponsor { });
+            eventSponsorRepository.Add(new EventSponsor {EventId = eventId });
+            dbContext.SaveChanges();
         }
         public void DeleteOrganizator(int id)
         {
             eventSponsorRepository.Delete(id);
+            dbContext.SaveChanges();
         }
         public IQueryable<EventSponsor> AllEventSponsor()
         {
@@ -83,24 +88,29 @@ namespace EventBoardDataAccess.DataBase.Repository
             var roles = roleRepository.GetAll();
             return roles;
         }
-        public void AddRole()
+        public void AddRole(string name)
         {
-            roleRepository.Add(new Role { });
+            roleRepository.Add(new Role {Name = name });
+            dbContext.SaveChanges();
         }
         public void DeleteRole(int id)
         {
             roleRepository.Delete(id);
+            dbContext.SaveChanges();
         }
         #endregion
 
         #region Event
-        public void AddEvent(string name, string info, string plase)
+        public void AddEvent(string name)
         {
-            //   eventRepository.Add(new Event { Name = name, Info = info, Place = plase, });
+              eventRepository.Add(new Event { Name = name });
+            dbContext.SaveChanges();
         }
         public void DeleteEvent(int id)
         {
             eventRepository.Delete(id);
+            dbContext.SaveChanges();
+
         }
         public IQueryable<Event> AllEvent()
         {
@@ -108,14 +118,17 @@ namespace EventBoardDataAccess.DataBase.Repository
             return events;
         }
         #endregion
-        public void AddUser()
-        {
-            userRepository.Add(new User { });
-        }
 
+        #region User
+        public void AddUser(string name)
+        {
+            userRepository.Add(new User { Name = name });
+            dbContext.SaveChanges();
+        }
         public void DeleteUser(int id)
         {
             userRepository.Delete(id);
+            dbContext.SaveChanges();
         }
         public IQueryable<User> AllUser()
         {
@@ -126,6 +139,9 @@ namespace EventBoardDataAccess.DataBase.Repository
         {
             dbContext.SaveChanges();
         }
+        #endregion
+
+        #region UnitOfWork
         public UnitOfWork()
         {
             var module = new Module();
@@ -146,5 +162,6 @@ namespace EventBoardDataAccess.DataBase.Repository
             eventRepository.DbContext = dbContext;
 
         }
+        #endregion
     }
 }

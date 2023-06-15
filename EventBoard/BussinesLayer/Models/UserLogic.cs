@@ -5,10 +5,13 @@ namespace BussinesLayer.Models
 {
     public class UserLogic : IUserLogic
     {
-        public void AddUser(string name)
+       
+
+        
+        public void AddUser(int roleId, string name)
         {
             var addUser = new UnitOfWork();
-            addUser.AddUser(name);
+            addUser.AddUser( roleId, name);
         }
 
         public void DeleteUser(int id)

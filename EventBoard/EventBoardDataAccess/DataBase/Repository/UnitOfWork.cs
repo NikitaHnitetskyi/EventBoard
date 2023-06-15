@@ -64,9 +64,9 @@ namespace EventBoardDataAccess.DataBase.Repository
         #endregion
 
         #region EventSponsor
-        public void AddEventSponsor(int eventId)
+        public void AddEventSponsor(int sponsorId)
         {
-            eventSponsorRepository.Add(new EventSponsor {EventId = eventId });
+            eventSponsorRepository.Add(new EventSponsor {SponsorId = sponsorId});
             dbContext.SaveChanges();
         }
         public void DeleteOrganizator(int id)
@@ -88,9 +88,9 @@ namespace EventBoardDataAccess.DataBase.Repository
             var roles = roleRepository.GetAll();
             return roles;
         }
-        public void AddRole(string name)
+        public void AddRole(string name, string des)
         {
-            roleRepository.Add(new Role {Name = name });
+            roleRepository.Add(new Role {Name = name, Description = des });
             dbContext.SaveChanges();
         }
         public void DeleteRole(int id)
@@ -120,9 +120,9 @@ namespace EventBoardDataAccess.DataBase.Repository
         #endregion
 
         #region User
-        public void AddUser(string name)
+        public void AddUser(int roleId, string name)
         {
-            userRepository.Add(new User { Name = name });
+            userRepository.Add(new User { RoleId = roleId, Name = name });
             dbContext.SaveChanges();
         }
         public void DeleteUser(int id)

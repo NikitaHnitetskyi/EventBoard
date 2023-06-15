@@ -6,20 +6,18 @@ public class Program
 {
     static void Main(string[] args)
     {
-        //var uw = new UnitOfWork();
-        //uw.AddEvent("Test");
-        //Console.WriteLine("good");
-        ////uw.DeleteEvent(1);
-        ////Console.WriteLine("good");
-
+        // Test air User -  work
         //var u = new UserLogic();
-        //u.AddUser("Test1259");
-        //Console.WriteLine("d");
+        //u.AddUser(4, "Admin"); // Id має вже існувати у таблиці Role
 
-        //var u = new UserLogic();
-        //u.AddUser("Vasya");
-        //Console.WriteLine("Good");
+        // Test air Event
+        var u = new EventLogic();
+        u.AddEvent("Test Eventdd"); // - work
+        //u.DeleteEvent(6); // - work
 
-
+        // Test air Role
+        //var u = new RoleLogic();
+        //u.AddRole("Admin","Test des"); // - work
+        //u.DeleteRole(3); //- work
     }
 }

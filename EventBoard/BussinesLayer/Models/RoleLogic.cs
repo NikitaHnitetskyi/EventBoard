@@ -1,5 +1,7 @@
 ﻿using BussinesLayer.Interfaces;
+using BussinesLayer.NInject;
 using EventBoardDataAccess.DataBase.Repository;
+using Ninject;
 
 namespace BussinesLayer.Models
 {
@@ -7,19 +9,25 @@ namespace BussinesLayer.Models
     {
         public void AddRole(string name, string des)
         {
-            var addRole = new UnitOfWork();
-            addRole.AddRole(name, des);
+            var module = new Module();
+            var kernal = new StandardKernel(module);
+            var addRol = kernal.Get<UnitOfWork>();
+            addRol.AddRole(name, des);
         }
 
         public void DeleteRole(int id)
         {
-            var deleteRole = new UnitOfWork();
-            deleteRole.DeleteRole(id);
+            var module = new Module();
+            var kernal = new StandardKernel(module);
+            var deleteRol = kernal.Get<UnitOfWork>();
+            deleteRol.DeleteRole(id);
         }
 
         public void GetAllRole()
         {
-            throw new NotImplementedException();
+            var module = new Module();
+            var kernal = new StandardKernel(module);
+            var allRol = kernal.GetAll<UnitOfWork>();
         }
 
         public void UpdateRole()

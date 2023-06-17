@@ -17,13 +17,17 @@ namespace BussinesLayer.Models
         }
         public void DeleteEvent(int id)
         {
-            var deleteEvent = new UnitOfWork();
-            deleteEvent.DeleteEvent(id);
+            var module = new Module();
+            var kernal = new StandardKernel(module);
+            var deleteEv = kernal.Get<UnitOfWork>();
+            deleteEv.DeleteEvent(id);
         }
 
         public void GetAllEvent()
         {
-            
+            var module = new Module();
+            var kernal = new StandardKernel(module);
+            var allEvent = kernal.GetAll<UnitOfWork>();
         }
 
         public void UpdateEvent()

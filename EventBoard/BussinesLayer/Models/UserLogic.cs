@@ -35,6 +35,9 @@ namespace BussinesLayer.Models
             
         }
 
-      
+        public void UpdateUser()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

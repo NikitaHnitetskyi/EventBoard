@@ -90,7 +90,7 @@ namespace EventBoardDataAccess.DataBase.Repository
         }
         public void AddRole(string name, string des)
         {
-            roleRepository.Add(new Role {Name = name, Description = des });
+            roleRepository.Add(new Role { Name = name, Description = des });
             dbContext.SaveChanges();
         }
         public void DeleteRole(int id)
@@ -103,7 +103,7 @@ namespace EventBoardDataAccess.DataBase.Repository
         #region Event
         public void AddEvent(string name)
         {
-              eventRepository.Add(new Event { Name = name });
+            eventRepository.Add(new Event { Name = name });
             dbContext.SaveChanges();
         }
         public void DeleteEvent(int id)
